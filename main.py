@@ -1,14 +1,32 @@
+from time import sleep
+
 from ventana_ui import *
 import telebot
-videos = False
-fotos = False
-audios = False
+
+
 apikey = ""
+ChatID = ""
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow) :
+    fotos = False
+    audios = False
+    videos = False
+    stopButton = False
+
     def __init__ ( self, *args, **kwargs ) :
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
+        self.StartButton.clicked.connect(self.iniciarBot)
+        self.stopButton.clicked.connect(self.ApagarBot)
+
+    def ApagarBot (self):
+
+        self.stopButton = False
+
+
+    def obtenerChatID( self ):
+
+        return self.ChatID.toPlainText()
 
 
     def obtenerApiKey( self ):
@@ -20,22 +38,38 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow) :
 
         if self.CheckVideos_2.isChecked() :
 
-            videos = True
+            self.videos = True
+
         else :
-            Videos = False
+            self.videos = False
 
         if self.CheckAudios.isChecked() :
 
-            audios = True
+            self.audios = True
         else :
-            audios = False
+            self.audios = False
 
         if self.CheckFotos.isChecked() :
 
-            fotos = True
+            self.fotos = True
 
         else :
-            fotos = False
+            self.fotos = False
+
+    def iniciarBot (self) :
+
+        self.stopButton = True
+
+        # obtenemos la api key , inicializamos el bot
+
+        bot = telebot.TeleBot(self.obtenerApiKey(), parse_mode=None)
+
+        # comprobamos que tipo de media queremos enviar
+
+        window.ComprobarChecksBoxs()
+
+        # enviamos el media
+
 
 
 
@@ -45,19 +79,5 @@ if __name__ == "__main__" :
     window.show()
     app.exec_()
 
-
-def iniciarBot():
-
-    # obtenemos la api key , inicializamos el bot
-
-    bot = telebot.TeleBot(window.obtenerApiKey(), parse_mode=None)
-
-    #comprobamos que tipo de media queremos enviar
-
-    window.ComprobarChecksBoxs()
-
-    #enviamos el media
-
-    #TODO
 
 
