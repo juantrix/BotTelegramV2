@@ -7,25 +7,17 @@ with open('datos.txt', 'r') as f:
     f.close()
 
 bot = telebot.TeleBot(datos[1], parse_mode=None)
-
-videos = listdir('./videos')
-fotos = listdir('./fotos')
-audios = listdir('./audios')
-carpetas = [videos, fotos, audios]
 '''
 bot.send_video(datos[3], open('./videos/'+carpetas[0][0], 'rb'))
 bot.send_photo(datos[3], open('./fotos/'+carpetas[1][0], 'rb'))    
 bot.send_audio(datos[3], open('./audios/'+carpetas[2][0], 'rb'))
 
 '''
-
 while True:
     videos = listdir('./videos')
     fotos = listdir('./fotos')
     audios = listdir('./audios')
     carpetas = [videos, fotos, audios]
-
-    print(carpetas)
 
     for carpeta in carpetas:
         try:
@@ -34,8 +26,6 @@ while True:
                 system(f'mv videos/{carpeta[0]} videos_enviados/{carpeta[0]}')
             else:
                 system(f'rm videos/{carpeta[0]}')
-
-            time.sleep(datos[0]*60)
         except:
             pass
         try:
@@ -44,7 +34,6 @@ while True:
                 system(f'mv fotos/{carpeta[0]} fotos_enviadas/{carpeta[0]}')
             else:
                 system(f'rm fotos/{carpeta[0]}')   
-            time.sleep(datos[0]*60)  
         except:
             pass
         try:
@@ -53,11 +42,6 @@ while True:
                 system(f'mv audios/{carpeta[0]} audios_enviados/{carpeta[0]}')
             else:
                 system(f'rm audios/{carpeta[0]}')
-            time.sleep(datos[0]*60)
         except:
             pass
-            
-    # mirar los contenidos de las carpetas
-
-    # enviar 1 archivo de una carpeta
-    # pasar a la siguiente carpeta
+        time.sleep(int(datos[0])*60)
