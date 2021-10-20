@@ -17,7 +17,8 @@ while True:
     videos = listdir('./videos')
     fotos = listdir('./fotos')
     audios = listdir('./audios')
-    carpetas = [videos, fotos, audios]
+    archivos = listdir('./archivos')
+    carpetas = [ archivos, videos, fotos, audios]
 
     for carpeta in carpetas:
         try:
@@ -42,6 +43,14 @@ while True:
                 system(f'mv audios/{carpeta[0]} audios_enviados/{carpeta[0]}')
             else:
                 system(f'rm audios/{carpeta[0]}')
+        except:
+            pass
+        try:
+            bot.send_document(datos[3], open('./archivos/'+carpeta[0], 'rb'))
+            if datos[4] == 'True':
+                system(f'mv archivos/{carpeta[0]} archivos_enviados/{carpeta[0]}')
+            else:
+                system(f'rm archivos/{carpeta[0]}')
         except:
             pass
         time.sleep(int(datos[0])*60)
