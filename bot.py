@@ -18,7 +18,7 @@ while True:
     fotos = listdir('./fotos')
     audios = listdir('./audios')
     archivos = listdir('./archivos')
-    carpetas = [ archivos, videos, fotos, audios]
+    carpetas = [archivos, videos, fotos, audios]
 
     for carpeta in carpetas:
         try:
