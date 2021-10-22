@@ -4,53 +4,49 @@ import telebot
 
 with open('datos.txt', 'r') as f:
     datos = [line.strip() for line in f] #0: tiempo entre publicacion, 1: token del bot, 2: mensaje que sale debajo de la foto, 3: id del chat, 4: True si se quiere mantener las fotos enviadas(False borra)
-    f.close()
+    f.close()                            # cantidad de repeticiones 5:videos, 6:fotos, 7:audios, 8:archivos 
 
 bot = telebot.TeleBot(datos[1], parse_mode=None)
-'''
-bot.send_video(datos[3], open('./videos/'+carpetas[0][0], 'rb'))
-bot.send_photo(datos[3], open('./fotos/'+carpetas[1][0], 'rb'))    
-bot.send_audio(datos[3], open('./audios/'+carpetas[2][0], 'rb'))
 
-'''
+repeticiones = [int(datos[5]), int(datos[6]), int(datos[7]), int(datos[8])]
+
+carpeta_or = ['videos', 'fotos', 'audios', 'archivos']
+
+
 while True:
     videos = listdir('./videos')
     fotos = listdir('./fotos')
     audios = listdir('./audios')
     archivos = listdir('./archivos')
-    carpetas = [archivos, videos, fotos, audios]
+    carpetas = [videos, fotos, audios, archivos]
+    
+    for carpeta, rep, carp in zip(carpetas, repeticiones, carpeta_or):
+        for i in range(rep):
 
-    for carpeta in carpetas:
-        try:
-            bot.send_video(datos[3], open('./videos/'+carpeta[0], 'rb'))
-            if datos[4] == 'True':
-                system(f'mv videos/{carpeta[0]} videos_enviados/{carpeta[0]}')
-            else:
-                system(f'rm videos/{carpeta[0]}')
-        except:
-            pass
-        try:
-            bot.send_photo(datos[3], open('./fotos/'+carpeta[0], 'rb'))    
-            if datos[4] == 'True':
-                system(f'mv fotos/{carpeta[0]} fotos_enviadas/{carpeta[0]}')
-            else:
-                system(f'rm fotos/{carpeta[0]}')   
-        except:
-            pass
-        try:
-            bot.send_audio(datos[3], open('./audios/'+carpeta[0], 'rb'))
-            if datos[4] == 'True':
-                system(f'mv audios/{carpeta[0]} audios_enviados/{carpeta[0]}')
-            else:
-                system(f'rm audios/{carpeta[0]}')
-        except:
-            pass
-        try:
-            bot.send_document(datos[3], open('./archivos/'+carpeta[0], 'rb'))
-            if datos[4] == 'True':
-                system(f'mv archivos/{carpeta[0]} archivos_enviados/{carpeta[0]}')
-            else:
-                system(f'rm archivos/{carpeta[0]}')
-        except:
-            pass
-        time.sleep(int(datos[0])*60)
+            try:
+                if carp == 'videos':
+                    bot.send_video(datos[3], open(f'./{carp}/'+carpeta[i], 'rb'), caption=datos[2])
+                    print(carp)
+
+                elif carp == 'fotos':
+                    bot.send_photo(datos[3], open(f'./{carp}/'+carpeta[i], 'rb'), caption=datos[2])
+                    print(carp)
+
+                elif carp == 'audios':
+                    bot.send_audio(datos[3], open(f'./{carp}/'+carpeta[i], 'rb'), caption=datos[2])
+                    print(carp)
+                
+                elif carp == 'archivos':
+                    bot.send_document(datos[3], open(f'./{carp}/'+carpeta[i], 'rb'), caption=datos[2])
+                    print(carp)
+
+                if datos[4] == 'True':
+                    system(f'mv {carp}/{carpeta[i]} {carp}_enviados/{carpeta[i]}')
+                else:
+                    system(f'rm {carp}/{carpeta[i]}')
+
+            except:
+                pass
+
+            time.sleep(int(datos[0])*60)
+            
